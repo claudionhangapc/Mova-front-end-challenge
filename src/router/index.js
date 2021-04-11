@@ -9,7 +9,16 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    props:true,
+    children:[
+      {
+        path:"/:id",
+        name:"showregion",
+        component:Home,
+        props:true
+      }
+    ]
   },
   {
     path: '/region/:id',

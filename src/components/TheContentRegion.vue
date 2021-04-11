@@ -16,7 +16,7 @@
         <div class="margin-bottom-p">
           <span>Região: </span>
           <span>
-            <router-link :to="{name:'Home',params:{id:country.region}}">
+            <router-link :to="{name:'showregion',params:{id:country.region}}">
              {{country.region}}
             </router-link>
           </span>

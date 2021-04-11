@@ -51,6 +51,7 @@
 import {helpers} from '@/helpers.js'
 export default {
   name: 'Home',
+  props:["id"],
   data(){
    return{
      new_info:{
@@ -66,6 +67,7 @@ export default {
       fetch(`https://restcountries.eu/rest/v2/`)
       .then(response => response.json())
       .then(response =>{
+        console.log(response.length);
         this.new_info.result = response;
       })
     },
@@ -100,6 +102,22 @@ export default {
         this.new_info.result = response;
       })
     },
+    getCountryByRegion(){
+      this.new_info.select_option_one="region";
+      this.new_info.select_option_two = this.id;
+      fetch(`https://restcountries.eu/rest/v2/${this.new_info.select_option_one}/${this.new_info.select_option_two}`)
+      .then(response => response.json())
+      .then(response =>{
+        this.new_info.result = response;
+      })
+    },
+     starFromRegion(id){
+       if(id===undefined){
+         this.getAllCountry();
+       }else{
+        this.getCountryByRegion();
+       }     
+      },
     pesquisar(){
       //this.getCountryByCapitalCity();
       //this.getCountryByLang();
@@ -109,7 +127,7 @@ export default {
     }
   },
   created(){
-    this.getAllCountry();
+    this.starFromRegion(this.id);
   },
   computed:{
     labelSelectTwo(){ 
