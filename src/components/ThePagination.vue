@@ -107,13 +107,14 @@ export default{
     width: 12px;
     height: 7px;
   }
+ 
   /*
-   display: flex;
-    align-items: center;
-    justify-content: center;
-    padding:8px 10px; 
-    display: flex;
+  *
   */
-
+  @media(max-width: 576px){
+     .pagination{
+      padding-top:28px;
+      }
+  }
 
 </style>

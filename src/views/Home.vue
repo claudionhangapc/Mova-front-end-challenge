@@ -3,7 +3,7 @@
     <div class="home-container">
       <div class="home-container-header">
         <!--Select one-->
-        <div>
+        <div class="margin-bottom-first-div">
           <p>Filtrar Por</p>
           <select name="" id="">
             <option value=""  selected >Escolha uma opção</option>
@@ -17,7 +17,7 @@
         <!--Select one fim -->
 
         <!--Select two-->
-        <div>
+        <div class="margin-bottom-first-div">
           <p>Regiao</p>
           <input  list="info-select" placeholder="Escolha uma opção" type="text">
           <datalist id="info-select">
@@ -29,17 +29,17 @@
         <!--Select two fim -->
 
         <!-- btn pesquisar -->
-        <div>
+        <div class="div-btn-pesquisar">
           <button class="btn-pesquisar">PESQUISAR</button>
         </div>
         <!-- btn pesquisar fim -->
       </div>
       <div class="home-container-content">
-        <div>
-          <img src="@/assets/Bandeira_Brasil.png" alt="bandeira Brasil">
+        <div v-for="pais in new_info.result" :key="pais.alpha2Code">
+          <img :src="pais.flag" :alt="pais.name">
         </div>
         <div>
-          <img src="@/assets/Bandeira _Alemanha.png" alt="bandeira Alemanha">
+          <img src="@/assets/Bandeira_Alemanha.png" alt="bandeira Alemanha">
         </div>
         <div>
           <img src="@/assets/Bandeira_Japao.png" alt="bandeira Japão">
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div>
-
+      {{new_info.result[0].name}}
     </div>
   </div>
 </template>
@@ -57,7 +57,27 @@
 
 export default {
   name: 'Home',
-  
+  data(){
+   return{
+     new_info:{
+       select_option_one:"",
+       select_option_two:"",
+       result:{}
+     }
+   } 
+  },
+  methods:{
+    getInfotmation(){
+      fetch(`https://restcountries.eu/rest/v2/`)
+      .then(response => response.json())
+      .then(response =>{
+        this.new_info.result = response;
+      })
+    }
+  },
+  created(){
+    this.getInfotmation();
+  }
 }
 </script>
 
@@ -79,6 +99,7 @@ export default {
 .home-container-header>div{
   /*background: chartreuse;*/
   width: 316px;
+  /*margin-bottom: 20px;*/
 }
 
 .home-container-header>div p{
@@ -150,9 +171,39 @@ button:focus, input:focus, select:focus { outline: none; }
 
 .home-container-content>div{
   width: 316px;
+  height:181px;
 }
 .home-container-content>div img{
   width: 100%;
-  height:181px;
+  height: 100%;
 }
+
+/*
+* media query
+*/
+@media(max-width: 576px){
+  .home{
+    padding-top:48px;
+  }
+  .home-container{
+    max-width: 316px;
+  }
+  .home-container-header{
+    flex-direction: column;
+  }
+  .home-container-content{
+    flex-direction: column;
+    margin-top:22px;
+  }
+  .home-container-content>div{
+    margin-bottom: 20px;
+  }
+  .margin-bottom-first-div{
+    margin-bottom: 22px;
+  }
+  .div-btn-pesquisar{
+    text-align: right;
+  }
+}
+
 </style>

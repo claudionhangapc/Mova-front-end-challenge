@@ -57,4 +57,25 @@ export default{
     margin-left: 16px;
     margin-right: 21px;
   }
+  /*
+  *
+  */
+  @media(max-width: 576px){
+     header{
+      padding-left: 19px;
+      padding-right: 37px;
+     }
+     header nav a.btn span{
+       display: none;
+     }
+     header nav a.btn{
+       border: none;
+      
+       padding-bottom: 7px;
+       width: 19px;
+     }
+     header nav a.btn img{
+       margin: 0;
+     }
+  }
 </style>

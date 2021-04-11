@@ -58,4 +58,27 @@ export default {
   margin-top: 114px;
   margin-bottom: 48px;
 }
+.neighbour-countries img{
+  width: 316;
+  height: 181px;
+}
+
+@media(max-width: 576px){
+ .region-page{
+  padding-top: 22px ;
+}
+.neighbour-countries{
+  flex-direction: column;
+}
+.region-page-container{
+  width: 316px;
+}
+.neighbour-countries-text{
+  margin-top: 46px;
+  margin-bottom: 24px;
+  }
+  .neighbour-countries>div{
+    margin-bottom: 20px;
+  }
+}
 </style>

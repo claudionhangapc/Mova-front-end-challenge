@@ -39,17 +39,16 @@ export default{
 <style >
 .region-content{
   display: flex;
-  height: 258px;
   box-sizing: border-box;
 }
 
 .region-content-div-img{
-width: 443px;
-height: 100%;
+  width: 443px;
+ 
 }
 .region-content-div-img img{
-width: 100%;
-height: 100%;
+  width: 443px;
+  height: 258px;
 }
 .region-content-div-info{
   margin-left: 24px;
@@ -68,4 +67,40 @@ height: 100%;
 .margin-bottom-p{
   margin-bottom: 32px;
 }
+
+@media(max-width: 576px){
+  .region-page{
+    width: 316px;
+    margin: 0 auto;
+  }
+  .region-content{
+    flex-direction: column;
+  }
+  .region-content-div-img{
+    width: 316px;
+    margin-bottom: 22px;
+  }
+  .region-content-div-img img{
+    width: 316px;
+    height: 181px;
+  }
+  .region-content-div-info{
+    margin-left: 0px;
+    }
+    
+  /*.region-content{
+  height: auto;
+  flex-direction: column;
+
+  }
+  .region-content-div-img{
+    height: auto;
+  }
+  .region-content-div-img img{
+    width: 316px;
+    height: 181px;
+  }*/
+
+}
 </style>
+
