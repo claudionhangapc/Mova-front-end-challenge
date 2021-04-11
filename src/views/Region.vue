@@ -7,14 +7,8 @@
       <p>Países vizinhos</p>
     </div>
     <div class="neighbour-countries region-page-container">
-      <div>
-        <img src="@/assets/Bandeira_Paraguai.svg" alt="bandeira Brasil">
-      </div>
-      <div>
-        <img src="@/assets/Bandeira_Bolivia.svg" alt="bandeira Bolivia">
-      </div>
-      <div>
-        <img src="@/assets/Bandeira_Argentina.svg" alt="bandeira Brasil">
+      <div v-for="pais in neighbor_country" :key="pais.alpha2Code">
+        <img :src="pais.flag" alt="bandeira Brasil">
       </div>
     </div>
   </div>
@@ -23,10 +17,37 @@
 <script>
 
 import TheContentRegion from "@/components/TheContentRegion.vue"
+import {mapActions, mapState} from "vuex";
 export default {
   name: 'Home',
+  props:["id"],
+  data(){
+    return{
+     
+    }
+  },
   components:{
     TheContentRegion,
+  },
+  computed:{
+    ...mapState(["country"]),
+    ...mapState(["neighbor_country"])
+   
+  },
+  methods:{
+    ...mapActions(["getCountryByName"]),
+    ...mapActions(["getListOfNeighBorCountry"]),
+    getCountry(id){
+      this.getCountryByName(id);
+      this.getListOfNeighBorCountry(id);
+    },  
+  },
+  created(){
+   this.getCountry(this.id);
+  },
+  beforeRouteUpdate(to,from,next){
+    this.getCountry(`${to.params.id}`);
+    next();
   }
 }
 </script>
@@ -42,11 +63,14 @@ export default {
 .neighbour-countries{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 .neighbour-countries > div{
   width: 316px;
   height: 181px;
+  margin-bottom: 20px;
+  
 }
 .neighbour-countries-text{
   font-family: Montserrat;

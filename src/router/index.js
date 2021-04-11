@@ -12,10 +12,16 @@ const routes = [
     component: Home
   },
   {
-    path: '/region',
-    name: 'Region',
-    component: Region
+    path: '/region/:id',
+    name: 'region',
+    component: Region,
+    props:true
   },
+  {
+    path:"*",
+    redirect:"/",
+    component:Home
+  }
  
 ]
 

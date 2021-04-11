@@ -26,6 +26,7 @@ export default{
 }
  a{
     text-decoration: none;
+    cursor:pointer;
   }
   ul{
     list-style: none;

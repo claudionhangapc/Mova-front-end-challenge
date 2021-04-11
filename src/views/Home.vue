@@ -5,56 +5,50 @@
         <!--Select one-->
         <div class="margin-bottom-first-div">
           <p>Filtrar Por</p>
-          <select name="" id="">
-            <option value=""  selected >Escolha uma opção</option>
-            <option value="">Região</option>
-            <option value="">Capital</option>
-            <option value="">Língua</option>
-            <option value="">País</option>
-            <option value="">Código de ligação</option>
+          <select name="" id="" v-model="new_info.select_option_one">
+            <option value="alpha" selected >Escolha uma opção</option>
+            <option value="region">Região</option>
+            <option value="capital">Capital</option>
+            <option value="lang">Língua</option>
+            <option value="alpha">País</option>
+            <option value="callingcode">Código de ligação</option>
           </select>
         </div>
         <!--Select one fim -->
 
         <!--Select two-->
         <div class="margin-bottom-first-div">
-          <p>Regiao</p>
-          <input  list="info-select" placeholder="Escolha uma opção" type="text">
+          <p>{{labelSelectTwo}}</p>
+          <input  list="info-select" placeholder="Escolha uma opção" type="text" v-model="new_info.select_option_two">
           <datalist id="info-select">
-            <option value="teste 1"/>
-            <option value="teste 2"/>
-            <option value="teste 3"/>
+            
           </datalist>
         </div>
         <!--Select two fim -->
 
         <!-- btn pesquisar -->
         <div class="div-btn-pesquisar">
-          <button class="btn-pesquisar">PESQUISAR</button>
+          <button class="btn-pesquisar" v-on:click="pesquisar">PESQUISAR</button>
         </div>
         <!-- btn pesquisar fim -->
       </div>
       <div class="home-container-content">
-        <div v-for="pais in new_info.result" :key="pais.alpha2Code">
-          <img :src="pais.flag" :alt="pais.name">
-        </div>
-        <div>
-          <img src="@/assets/Bandeira_Alemanha.png" alt="bandeira Alemanha">
-        </div>
-        <div>
-          <img src="@/assets/Bandeira_Japao.png" alt="bandeira Japão">
+        <div v-for="pais in new_info.result" :key="pais.alpha2Code" >
+          <router-link :to="{name:'region',params:{id:pais.alpha2Code}}">
+            <img :src="pais.flag" :alt="pais.name" >
+          </router-link>
         </div>
       </div>
     </div>
     <div>
-      {{new_info.result[0].name}}
+      
     </div>
   </div>
 </template>
 
 <script>
 
-
+import {helpers} from '@/helpers.js'
 export default {
   name: 'Home',
   data(){
@@ -63,20 +57,64 @@ export default {
        select_option_one:"",
        select_option_two:"",
        result:{}
-     }
+     },
+   
    } 
   },
   methods:{
-    getInfotmation(){
+    getAllCountry(){
       fetch(`https://restcountries.eu/rest/v2/`)
       .then(response => response.json())
       .then(response =>{
         this.new_info.result = response;
       })
+    },
+    getCountryByCapitalCity(){
+       fetch(`https://restcountries.eu/rest/v2/${this.new_info.select_option_one}/${this.new_info.select_option_two}`)
+      .then(response => response.json())
+      .then(response =>{
+        this.new_info.result = response;
+      })
+    },
+    getCountryByLang(){
+      fetch(`https://restcountries.eu/rest/v2/${this.new_info.select_option_one}/${this.new_info.select_option_two}`)
+      .then(response => response.json())
+      .then(response =>{
+        this.new_info.result = response;
+      })
+    },
+    getCountryByName(){
+      let array_conutry = [];
+      fetch(`https://restcountries.eu/rest/v2/${this.new_info.select_option_one}/${this.new_info.select_option_two}`)
+      .then(response => response.json())
+      .then(response =>{
+         array_conutry[0] = response;
+        this.new_info.result =  array_conutry;
+        
+      })
+    },
+    getCountryByCallingCode(){
+      fetch(`https://restcountries.eu/rest/v2/${this.new_info.select_option_one}/${this.new_info.select_option_two}`)
+      .then(response => response.json())
+      .then(response =>{
+        this.new_info.result = response;
+      })
+    },
+    pesquisar(){
+      //this.getCountryByCapitalCity();
+      //this.getCountryByLang();
+      //
+      //this.getCountryByName();
+      this.getCountryByCallingCode();
     }
   },
   created(){
-    this.getInfotmation();
+    this.getAllCountry();
+  },
+  computed:{
+    labelSelectTwo(){ 
+      return helpers.getTextFromSelected(this.new_info.select_option_one);
+    }
   }
 }
 </script>
@@ -166,16 +204,20 @@ button:focus, input:focus, select:focus { outline: none; }
   margin-top: 48px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
 .home-container-content>div{
   width: 316px;
   height:181px;
+  margin-bottom: 20px;
+
 }
+
 .home-container-content>div img{
-  width: 100%;
-  height: 100%;
+  width: 316px;
+  height:181px;
 }
 
 /*

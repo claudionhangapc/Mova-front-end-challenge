@@ -2,28 +2,36 @@
   <div class="region">
     <div class="region-content">
       <div class="region-content-div-img">
-        <img src="@/assets/Bandeira_Brasil.png" alt="bandeira Brasil">
+        <img v-bind:src="country.flag" :alt="country.flag">
       </div>
       <div class="region-content-div-info">
         <div class="margin-bottom-p">
           <span>Nome: </span>
-          <span>Brasil</span>
+          <span>{{country.name}}</span>
         </div>
         <div class="margin-bottom-p">
           <span>Capital: </span>
-          <span>Brasília</span>
+          <span>{{country.capital}}</span>
+        </div>
+        <div class="margin-bottom-p">
+          <span>Região: </span>
+          <span>
+            <router-link :to="{name:'Home',params:{id:country.region}}">
+             {{country.region}}
+            </router-link>
+          </span>
         </div>
         <div class="margin-bottom-p">
           <span>Sub-reião: </span>
-          <span>Sub-região</span>
+          <span>{{country.subregion}}</span>
         </div>
         <div class="margin-bottom-p">
           <span>População: </span>
-          <span>XXXXXX</span>
+          <span>{{country.population}}</span>
         </div>
         <div>
           <span>Linguas: </span>
-          <span>Portugues</span>
+          <span>Portugues </span>
         </div>
       </div>
     </div>
@@ -31,8 +39,11 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
 export default{
-
+  computed:{
+    ...mapState(["country"])
+  }
 }
 </script>
 
@@ -65,7 +76,7 @@ export default{
   color: #454545;
 }
 .margin-bottom-p{
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 @media(max-width: 576px){
