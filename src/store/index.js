@@ -6,9 +6,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     country:{
-   
     },
-    neighbor_country:[]
+    neighbor_country:[],
+    pagination:{
+      
+    }
   },
   mutations: {
     UPDATE_COUNTRY(state,payload){
@@ -16,7 +18,8 @@ export default new Vuex.Store({
     },
     UPDATE_NEIGHBOR_COUNTRY(state,payload){
       state.neighbor_country = payload;
-    }
+    },
+    
   },
   actions: {
     async getCountryByName(context, payload){
@@ -24,6 +27,8 @@ export default new Vuex.Store({
 
       const dadosJason = await dadosResponse.json();
       context.commit("UPDATE_COUNTRY",dadosJason);
+      context.commit("UPDATE_PAGINATION",dadosJason);
+      
     },
     async getListOfNeighBorCountry(context, payload){
       let array_country=[];
@@ -44,7 +49,8 @@ export default new Vuex.Store({
         })
       });
       context.commit("UPDATE_NEIGHBOR_COUNTRY",array_country);
-    }
+    },
+    
   },
   modules: {
   }

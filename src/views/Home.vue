@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="home-container">
+    <div class="home-container">     
       <div class="home-container-header">
         <!--Select one-->
         <div class="margin-bottom-first-div">
@@ -21,7 +21,7 @@
           <p>{{labelSelectTwo}}</p>
           <input  list="info-select" placeholder="Escolha uma opção" type="text" v-model="new_info.select_option_two">
           <datalist id="info-select">
-            
+            <option  v-for="lista in arraydatalist" :key="lista" v-bind:value="lista"></option>
           </datalist>
         </div>
         <!--Select two fim -->
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div>
-      
+
     </div>
   </div>
 </template>
@@ -59,15 +59,81 @@ export default {
        select_option_two:"",
        result:{}
      },
-   
+     arraydatalist:[]
    } 
   },
   methods:{
+  
+   getAllCountryReturn(){
+      fetch(`https://restcountries.eu/rest/v2/`)
+      .then(response => response.json())
+      .then(response =>{ 
+        this.arraydatalist = [];
+        if(this.new_info.select_option_one=="callingcode"){
+          let dataValue =response.map(a => a.callingCodes);
+          let dataValue2 = [];
+          dataValue.forEach(function(item) {
+            dataValue2.push(item[0]);
+            console.log(item[0]);
+          });
+          let espectResult =  [];
+            dataValue2.forEach(function(item) {
+          if(espectResult.indexOf(item) < 0) {
+              espectResult.push(item);
+              }
+           });
+            this.arraydatalist = espectResult;
+          }
+          if(this.new_info.select_option_one=="region"){
+          let dataValue = response.map(a => a.region);
+          let espectResult =  [];
+            dataValue.forEach(function(item) {
+          if(espectResult.indexOf(item) < 0) {
+              espectResult.push(item);
+              }
+           });
+            this.arraydatalist =  espectResult;
+          }
+          if(this.new_info.select_option_one=="capital"){
+          let dataValue = response.map(a => a.capital);
+          let espectResult =  [];
+            dataValue.forEach(function(item) {
+          if(espectResult.indexOf(item) < 0) {
+              espectResult.push(item);
+              }
+           });
+            this.arraydatalist =  espectResult;
+          }
+          if(this.new_info.select_option_one=="alpha"){
+          let dataValue = response.map(a => a.name);
+          let espectResult =  [];
+            dataValue.forEach(function(item) {
+          if(espectResult.indexOf(item) < 0) {
+              espectResult.push(item);
+              }
+           });
+            this.arraydatalist =  espectResult;
+          }
+           if(this.new_info.select_option_one=="lang"){
+          let dataValue =response.map(a => a.languages);
+          let dataValue2 = [];
+          dataValue.forEach(function(item) {
+            dataValue2.push(item[0].name);
+          });
+          let espectResult =  [];
+            dataValue2.forEach(function(item) {
+          if(espectResult.indexOf(item) < 0) {
+              espectResult.push(item);
+              }
+           });
+            this.arraydatalist = espectResult;
+          }
+              })    
+    },
     getAllCountry(){
       fetch(`https://restcountries.eu/rest/v2/`)
       .then(response => response.json())
       .then(response =>{
-        console.log(response.length);
         this.new_info.result = response;
       })
     },
@@ -100,11 +166,12 @@ export default {
       .then(response => response.json())
       .then(response =>{
         this.new_info.result = response;
+
       })
     },
-    getCountryByRegion(){
+    getCountryByRegion(id){
       this.new_info.select_option_one="region";
-      this.new_info.select_option_two = this.id;
+      this.new_info.select_option_two = id;
       fetch(`https://restcountries.eu/rest/v2/${this.new_info.select_option_one}/${this.new_info.select_option_two}`)
       .then(response => response.json())
       .then(response =>{
@@ -115,15 +182,30 @@ export default {
        if(id===undefined){
          this.getAllCountry();
        }else{
-        this.getCountryByRegion();
+        this.getCountryByRegion(id);
        }     
       },
     pesquisar(){
-      //this.getCountryByCapitalCity();
-      //this.getCountryByLang();
-      //
-      //this.getCountryByName();
-      this.getCountryByCallingCode();
+       switch(this.new_info.select_option_one){
+        case "region":
+          this.getCountryByRegion(this.new_info.select_option_two);
+          break;
+        case "lang":
+          this.getCountryByLang();
+          break;
+        case "alpha":
+          this.this.getCountryByName();
+          break;
+        case "callingcode":
+          this.this.getCountryByCallingCode();
+          break;
+        case "capital":
+          this.getCountryByCapitalCity();
+          break;
+        default:
+           this.getAllCountry()
+      }  
+      
     }
   },
   created(){
@@ -132,7 +214,21 @@ export default {
   computed:{
     labelSelectTwo(){ 
       return helpers.getTextFromSelected(this.new_info.select_option_one);
-    }
+    },
+  result(){
+    return this.new_info.result;
+  },
+  selectone_option_one(){
+    return this.new_info.select_option_one;
+  }
+  },
+  watch:{
+  selectone_option_one(){
+    
+       this.getAllCountryReturn();
+      
+   
+   }
   }
 }
 </script>

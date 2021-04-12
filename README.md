@@ -1,4 +1,4 @@
-# navedex
+# Mova
 
 1. Faça o clone desse repositório;
 2. Acesse a raiz do projeto `cd Mova-front-end-challenge`;
